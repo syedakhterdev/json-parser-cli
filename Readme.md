@@ -1,4 +1,15 @@
+# Json Parser CLI (Node.js)
 
+### Installation
+
+Install the dependencies.
+
+```sh
+$ npm install
+$ npm link
+$ json-parser-cli
+Please enter selecto
+```
 ### Input Types
 For class:
 ```sh
