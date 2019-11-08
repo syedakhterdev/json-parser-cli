@@ -34,8 +34,10 @@ try {
                 });
                 break;
             case "#":
+                found = [];
                 const identifier = selector.replace(/\#/g, '');
-                deepSearch(jsonData, 'identifier', (k, v) =>  v === identifier, true).then((f) => {
+                const callback = (k, v) =>   v === identifier;
+                deepSearch(jsonData, 'identifier', callback, true).then((f) => {
                     console.dir(f, {depth: null, colors: true});
                     nextSelectorMessage();
                 });
@@ -48,15 +50,14 @@ try {
                     deepSearch(jsonData, 'class', (k, v) =>  v === splitId[0], true).then((view) => {
                         if(view.length > 0) {
                             view.forEach((c) => {
-                                // promises.push(
                                     deepSearch(c, selector.indexOf('#') > 0 ? 'identifier':'classNames', callback, false).then((f) => {
-                                        if(f.length > 0)
+                                        if(f.length > 0){
                                             console.dir(f, {depth: null, colors: true});
-                                        nextSelectorMessage();
+                                            nextSelectorMessage();
+                                        }
                                     });
-                                    // );
                             });
-                            // Promise.all(promises).
+
                         }
                     });
                 } else {
@@ -78,7 +79,7 @@ try {
 function nextSelectorMessage() {
     const log = chalk.green('==============================================================');
     console.log(log);
-    console.log("Please enter selector.");
+    // console.log("Please enter selector.");
 }
 
 function  deepSearch (object, key, predicate, isDeepSearch) {
@@ -94,8 +95,8 @@ function  deepSearch (object, key, predicate, isDeepSearch) {
 
         for (let i = 0; i < Object.keys(object).length; i++) {
             if (typeof object[Object.keys(object)[i]] === "object") {
-                deepSearch(object[Object.keys(object)[i]], key, predicate).then((o) => {
-
+                deepSearch(object[Object.keys(object)[i]], key, predicate, isDeepSearch).then((o) => {
+                    // resolve(o);
                 })
             }
         }
